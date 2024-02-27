@@ -1,11 +1,11 @@
 <template>
-  <div class="products-swiper pt-16">
+  <div class="products-swiper pt-16 pb-5">
     <div class="title mb-10 px-5 d-flex align-center justify-space-between">
       <h2
         style="font-weight: 900 font-size: 30px"
-        class="text-red"
+        :class="[`text-${titleColor}`]"
       >
-        Flash Deals
+        {{ title }}
       </h2>
       <a
         href="#"
@@ -14,6 +14,28 @@
         >Shop All</a
       >
     </div>
+
+    <v-container
+      fluid
+      v-if="!products.length"
+    >
+      <v-row>
+        <v-col
+          cols="12"
+          class="pt-14"
+        >
+          <v-row>
+            <v-col
+              cols="3"
+              v-for="num in 4"
+              :key="num"
+            >
+              <VSkeletonLoader type="image, article, button"></VSkeletonLoader>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
     <Swiper
       :pagination="{ el: '.swiper-pagination', clickable: true }"
       :modules="modules"
@@ -52,11 +74,10 @@
             </div>
           </v-hover>
           <v-card-text class="pl-0 pb-1">
-            ({{ item.title }})
             {{
-              item.description.split('').length <= 7
-                ? item.description
-                : item.description.split(' ').slice(0, 7).join(' ') + '...'
+              `(${item.title}) ${item.description}`.length <= 55
+                ? `(${item.title}) ${item.description}`
+                : `(${item.title}) ${item.description}`.substring(0, 55) + '...'
             }}
           </v-card-text>
           <v-rating
@@ -121,10 +142,18 @@
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import { Pagination, Navigation, Autoplay } from 'swiper';
+import { VSkeletonLoader } from 'vuetify/lib/components/index.mjs';
+
 export default {
   props: {
     products: {
       type: Array,
+    },
+    title: {
+      type: String,
+    },
+    titleColor: {
+      type: String,
     },
   },
   setup() {
@@ -135,6 +164,7 @@ export default {
   components: {
     Swiper,
     SwiperSlide,
+    VSkeletonLoader,
   },
   data: () => ({
     showenItem: {},

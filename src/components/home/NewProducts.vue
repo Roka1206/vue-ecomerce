@@ -1,10 +1,40 @@
 <template>
   <div class="new-products pt-12">
+    <div class="title mb-10 px-5 d-flex align-center justify-space-between">
+      <h2
+        style="font-weight: 900 font-size: 30px"
+        class="text-red"
+      >
+        New Products
+      </h2>
+      <a
+        href="#"
+        class="text-black"
+        style="font-size: 14px"
+        >Shop All</a
+      >
+    </div>
     <v-container fluid>
       <v-row>
         <v-col
           cols="7"
-          class="pt-16"
+          v-if="!products.length"
+          class="pt-14"
+        >
+          <v-row>
+            <v-col
+              cols="4"
+              v-for="num in 3"
+              :key="num"
+            >
+              <VSkeletonLoader type="image, article, button"></VSkeletonLoader>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col
+          cols="7"
+          class="pt-14"
+          v-else
         >
           <Swiper
             :pagination="{ el: '.swiper-pagination', clickable: true }"
@@ -12,7 +42,6 @@
             :slides-per-view="3"
             :space-between="20"
             class="pb-9 px-5"
-            :autoplay="{ delay: 3000 }"
           >
             <SwiperSlide
               v-for="item in products"
@@ -43,14 +72,11 @@
                   </div>
                 </v-hover>
                 <v-card-text class="pl-0 pb-1">
-                  ({{ item.title }})
                   {{
-                    item.description + '' + item.title.split('').length <= 6
-                      ? item.description
-                      : item.description
-                          .split(' ')
-                          .slice(0, 6 - item.title.split('').length)
-                          .join(' ') + '...'
+                    `(${item.title}) ${item.description}`.length <= 45
+                      ? `(${item.title}) ${item.description}`
+                      : `(${item.title}) ${item.description}`.substring(0, 45) +
+                        '...'
                   }}
                 </v-card-text>
                 <v-rating
@@ -128,7 +154,8 @@
 
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import { Pagination, Autoplay } from 'swiper';
+import { Pagination } from 'swiper';
+import { VSkeletonLoader } from 'vuetify/lib/components/index.mjs';
 
 export default {
   props: {
@@ -138,12 +165,13 @@ export default {
   },
   setup() {
     return {
-      modules: [Pagination, Autoplay],
+      modules: [Pagination],
     };
   },
   components: {
     Swiper,
     SwiperSlide,
+    VSkeletonLoader,
   },
   data: () => ({
     showenItem: {},

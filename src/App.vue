@@ -30,5 +30,8 @@ nav {
       color: #42b983;
     }
   }
+  .v-rating_wrapper {
+    margin-right: 5px;
+  }
 }
 </style>

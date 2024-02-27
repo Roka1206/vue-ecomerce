@@ -9,7 +9,8 @@
               <p class="hint">Sale up to 70% off on selected items*</p>
               <v-btn
                 variant="outlined"
-                class="py-2 px-6"
+                height="50"
+                width="160"
                 denisity="combact"
                 style="border-radius: 30px; text-transform: none"
                 >Shop Now</v-btn
