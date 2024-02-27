@@ -9,11 +9,13 @@
       <v-container fluid>
         <v-row>
           <v-col cols="3">
-            <img
-              src="../assets/images/logo.png"
-              alt="Logo"
-              class="logo"
-            />
+            <router-link :to="'/'">
+              <img
+                class="w-50"
+                src="@/assets/images/logo.png"
+                alt="logo"
+              />
+            </router-link>
           </v-col>
           <v-col cols="5">
             <div
@@ -83,22 +85,29 @@
           </v-col>
         </v-row>
         <v-row class="mt-6">
-          <v-col cols="5">
+          <v-col cols="8">
             <ul
               class="links d-flex text-white justify-space-between"
               style="list-style: none"
             >
-              <li>Theme Demo</li>
-              <li>Shop</li>
-              <li>Product</li>
-              <li>New In</li>
-              <li>Must Have</li>
-              <li>Collections</li>
+              <li
+                v-for="category in categories"
+                :key="category.title"
+              >
+                <router-link
+                  :to="{
+                    name: 'products_category',
+                    params: { category: category.route, title: category.title },
+                  }"
+                  style="color: white; text-decoration: none"
+                  >{{ category.title }}</router-link
+                >
+              </li>
             </ul>
           </v-col>
 
           <v-col
-            cols="5"
+            cols="4"
             class="d-flex justify-end"
             style="gap: 35px"
           >
@@ -147,12 +156,17 @@
 </template>
 
 <script>
+import { mapState } from 'pinia';
+import { productsModule } from '@/stores/products';
 export default {
   inject: ['Emitter'],
   methods: {
     openCart() {
       this.Emitter.emit('openCart');
     },
+  },
+  computed: {
+    ...mapState(productsModule, ['categories']),
   },
   data: () => ({
     selectedLang: [

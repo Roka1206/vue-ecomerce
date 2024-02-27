@@ -4,27 +4,36 @@
       <v-container fluid>
         <v-row>
           <v-col cols="2">
-            <img
-              class="w-50"
-              src="@/assets/images/logo.png"
-              alt=""
-            />
+            <router-link :to="'/'">
+              <img
+                class="w-50"
+                src="@/assets/images/logo.png"
+                alt="logo"
+              />
+            </router-link>
           </v-col>
-          <v-col cols="5">
+          <v-col cols="7">
             <ul
               class="links d-flex text-white justify-space-between"
               style="list-style: none"
             >
-              <li>Theme Demo</li>
-              <li>Shop</li>
-              <li>Product</li>
-              <li>New In</li>
-              <li>Must Have</li>
-              <li>Collections</li>
+              <li
+                v-for="category in categories"
+                :key="category.title"
+              >
+                <router-link
+                  :to="{
+                    name: 'products_category',
+                    params: { category: category.route, title: category.title },
+                  }"
+                  style="color: white; text-decoration: none"
+                  >{{ category.title }}</router-link
+                >
+              </li>
             </ul>
           </v-col>
           <v-col
-            cols="5"
+            cols="3"
             class="d-flex justify-end align-center"
             style="gap: 20px"
           >
@@ -60,12 +69,17 @@
 </template>
 
 <script>
+import { productsModule } from '@/stores/products';
+import { mapState } from 'pinia';
 export default {
   inject: ['Emitter'],
   methods: {
     openCart() {
       this.Emitter.emit('openCart');
     },
+  },
+  computed: {
+    ...mapState(productsModule, ['categories']),
   },
 };
 </script>

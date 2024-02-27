@@ -8,6 +8,82 @@ export const productsModule = defineStore('productsModule', {
     mobilePhones: [],
     fragrances: [],
     groceries: [],
+    categoryProducts: [],
+    singelProduct: [],
+    categories: [
+      {
+        title: 'Smart Phones',
+        route: 'smartphones',
+      },
+      {
+        title: 'Laptops',
+        route: 'laptops',
+      },
+      {
+        title: 'Fragrances',
+        route: 'fragrances',
+      },
+      {
+        title: 'Skincare',
+        route: 'skincare',
+      },
+      {
+        title: 'Groceries',
+        route: 'groceries',
+      },
+      {
+        title: 'Home Decoration',
+        route: 'home-decoration',
+      },
+      {
+        title: 'Furniture',
+        route: 'furniture',
+      },
+      {
+        title: 'Tops',
+        route: 'tops',
+      },
+      /*      {
+        title: 'Womens Dresses',
+        route: 'womens-dresses',
+      },
+      {
+        title: 'Womens Shoes',
+        route: 'womens-shoes',
+      },
+      {
+        title: 'Mens Shirts',
+        route: 'mens-shirts',
+      },
+         {
+        title: 'Mens Shoes',
+        route: 'mens-shoes',
+      },
+      {
+        title: 'Mens Watches',
+        route: 'mens-watches',
+      },
+      {
+        title: 'Womens Watches',
+        route: 'womens-watches',
+      },
+      {
+        title: 'Womens Bags',
+        route: 'womens-bags',
+      },
+      {
+        title: 'Womens Jewellery',
+        route: 'womens-jewellery',
+      },
+      {
+        title: 'Sunglasses',
+        route: 'sunglasses',
+      },
+      {
+        title: 'Automotive',
+        route: 'automotive',
+      }, */
+    ],
   }),
   actions: {
     async getProducts() {
@@ -29,6 +105,18 @@ export const productsModule = defineStore('productsModule', {
           );
         })
         .catch((err) => console.log(err));
+    },
+
+    async getProductsByCategory(category) {
+      await axios
+        .get(`https://dummyjson.com/products/category/${category}?limit=20`)
+        .then((res) => (this.categoryProducts = res.data));
+    },
+
+    async getSingleProduct(producId) {
+      await axios
+        .get(`https://dummyjson.com/products/${producId}`)
+        .then((res) => (this.singelProduct = res.data));
     },
   },
 });

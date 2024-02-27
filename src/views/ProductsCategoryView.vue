@@ -1,55 +1,32 @@
 <template>
-  <div class="new-products pt-12">
-    <div class="title mb-10 px-5 d-flex align-center justify-space-between">
-      <h2
-        style="font-weight: 900 font-size: 30px"
-        class="text-red"
+  <div class="products-category mt-10">
+    <h1 class="text-center mb-7">{{ $route.params.title }}</h1>
+    <v-container>
+      <v-card
+        :loading="loading"
+        class="pt-5"
+        min-height="700px"
       >
-        New Products
-      </h2>
-      <a
-        href="#"
-        class="text-black"
-        style="font-size: 14px"
-        >Shop All</a
-      >
-    </div>
-    <v-container fluid>
-      <v-row>
-        <v-col
-          cols="7"
-          v-if="!products.length"
-          class="pt-14"
-        >
-          <v-row>
-            <v-col
-              cols="4"
-              v-for="num in 3"
-              :key="num"
-            >
-              <VSkeletonLoader type="image, article, button"></VSkeletonLoader>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col
-          cols="7"
-          class="pt-14"
-          v-else
-        >
-          <Swiper
-            :pagination="{ el: '.swiper-pagination', clickable: true }"
-            :modules="modules"
-            :slides-per-view="3"
-            :space-between="20"
-            class="pb-9 px-5"
+        <v-row v-if="loading">
+          <v-col
+            cols="3"
+            v-for="num in 4"
+            :key="num"
           >
-            <SwiperSlide
-              v-for="item in products"
-              :key="item.id"
-            >
+            <VSkeletonLoader type="image, article, button"></VSkeletonLoader>
+          </v-col>
+        </v-row>
+        <v-row v-if="!loading">
+          <v-col
+            cols="3"
+            v-for="item in categoryProducts.products"
+            :key="item.id"
+            class="px-3"
+          >
+            <v-lazy>
               <v-card
                 elevation="0"
-                class="pb-5"
+                class="pb-3"
               >
                 <v-hover v-slot="{ isHovering, props }">
                   <div
@@ -126,62 +103,54 @@
                 <div class="mt-5">
                   <v-btn
                     density="combact"
-                    class="py-2 px-8"
+                    class="py-2 px-4"
                     style="text-transform: none; border-radius: 30px"
-                    @click="
-                      $router.push({
-                        name: 'product_details',
-                        params: { productId: item.id },
-                      })
-                    "
                     variant="outlined"
                   >
                     Choose Options
                   </v-btn>
                 </div>
               </v-card>
-            </SwiperSlide>
-            <div class="swiper-prev"></div>
-            <div class="swiper-next"></div>
-            <div class="swiper-pagination"></div>
-          </Swiper>
-        </v-col>
-        <v-col cols="5">
-          <img
-            src="@/assets/images/vr-banner.webp"
-            class="w-100"
-            alt=""
-          />
-        </v-col>
-      </v-row>
+            </v-lazy>
+          </v-col>
+        </v-row>
+      </v-card>
     </v-container>
   </div>
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import { Pagination } from 'swiper';
+import { productsModule } from '@/stores/products';
+import { mapActions, mapState } from 'pinia';
 import { VSkeletonLoader } from 'vuetify/lib/components/index.mjs';
 
 export default {
-  props: {
-    products: {
-      type: Array,
-    },
-  },
-  setup() {
-    return {
-      modules: [Pagination],
-    };
-  },
   components: {
-    Swiper,
-    SwiperSlide,
     VSkeletonLoader,
   },
   data: () => ({
     showenItem: {},
+    loading: false,
   }),
+  methods: {
+    ...mapActions(productsModule, ['getProductsByCategory']),
+  },
+  computed: {
+    ...mapState(productsModule, ['categoryProducts']),
+  },
+  watch: {
+    async $route() {
+      document.documentElement.scrollTo(0, 0);
+      this.loading = true;
+      await this.getProductsByCategory(this.$route.params.category);
+      this.loading = false;
+    },
+  },
+  async mounted() {
+    this.loading = true;
+    await this.getProductsByCategory(this.$route.params.category);
+    this.loading = false;
+  },
 };
 </script>
 

@@ -30,8 +30,14 @@ nav {
       color: #42b983;
     }
   }
-  .v-rating_wrapper {
-    margin-right: 5px;
-  }
+}
+.v-rating_wrapper {
+  margin-right: 5px;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
