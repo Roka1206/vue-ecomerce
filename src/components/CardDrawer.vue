@@ -12,9 +12,10 @@
         elevation="0"
       >
         <v-card-title
-          class="px-0"
+          class="pl-0 pr-2 d-flex justify-space-between align-center w-100"
           style="font-size: 17px; font-weight: bold"
           >Shopping Cart
+          <v-icon @click="drawer = false">mdi-close</v-icon>
         </v-card-title>
         <v-card-text
           class="px-0 py-0"
@@ -172,8 +173,9 @@
             variant="outlined"
             density="compact"
             height="45"
-            class="w-100"
+            class="w-100 mx-0"
             color="blue"
+            @click="$route.push({ name: 'cart-page' })"
             >View Cart
           </v-btn>
         </v-card-actions>
@@ -185,7 +187,7 @@
 
 <script>
 import { cartStore } from '@/stores/cart';
-import { mapState } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 export default {
   inject: ['Emitter'],
   data: () => ({
@@ -204,9 +206,9 @@ export default {
       return total;
     },
   },
-  /*   methods: {
+  methods: {
     ...mapActions(cartStore, ['getCartItems', 'deleteItem']),
-  }, */
+  },
   mounted() {
     this.Emitter.on('openCart', () => {
       this.drawer = true;

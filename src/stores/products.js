@@ -113,9 +113,9 @@ export const productsModule = defineStore('productsModule', {
         .then((res) => (this.categoryProducts = res.data));
     },
 
-    async getSingleProduct(producId) {
+    async getSingleProduct(productId) {
       await axios
-        .get(`https://dummyjson.com/products/${producId}`)
+        .get(`https://dummyjson.com/products/${productId}`)
         .then((res) => (this.singelProduct = res.data));
     },
   },

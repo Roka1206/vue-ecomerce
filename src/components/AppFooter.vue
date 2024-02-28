@@ -213,6 +213,7 @@
                   height: 30px;
                   background-color: #686868;
                   border-radius: 50%;
+                  cursor: pointer;
                 "
               >
                 <svg
@@ -237,6 +238,7 @@
                   height: 30px;
                   background-color: #686868;
                   border-radius: 50%;
+                  cursor: pointer;
                 "
               >
                 <svg
@@ -261,6 +263,7 @@
                   height: 30px;
                   background-color: #686868;
                   border-radius: 50%;
+                  cursor: pointer;
                 "
               >
                 <svg
@@ -285,6 +288,7 @@
                   height: 30px;
                   background-color: #686868;
                   border-radius: 50%;
+                  cursor: pointer;
                 "
               >
                 <svg
@@ -309,6 +313,7 @@
                   height: 30px;
                   background-color: #686868;
                   border-radius: 50%;
+                  cursor: pointer;
                 "
               >
                 <svg

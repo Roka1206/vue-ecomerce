@@ -13,9 +13,14 @@ const routes = [
     component: () => import('@/views/ProductsCategoryView'),
   },
   {
-    path: '/products/product_details/:productId',
+    path: '/products/product-details/:productId',
     name: 'products_details',
     component: () => import('@/views/ProductDetailsView'),
+  },
+  {
+    path: '/cart-page',
+    name: 'cart_page',
+    component: () => import('@/views/CartView'),
   },
 ];
 
