@@ -53,7 +53,7 @@
               >
                 <v-hover v-slot="{ isHovering, props }">
                   <div
-                    class="img-parent"
+                    class="img-parent position-relative"
                     style="height: 160px"
                   >
                     <img
@@ -69,6 +69,26 @@
                       }; cursor: pointer`"
                       v-bind="props"
                     />
+                    <v-btn
+                      density="compact"
+                      width="80"
+                      height="30"
+                      variant="outlined"
+                      class="bg-white quick-view-btn"
+                      style="
+                        text-transform: none;
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        border-radius: 30px;
+                        font-size: 12px;
+                        transition: 0.2 all ease-in-out;
+                        opacity: 0;
+                      "
+                      @click="openQuickView(item)"
+                      >Quick View</v-btn
+                    >
                   </div>
                 </v-hover>
                 <v-card-text class="pl-0 pb-1">
@@ -85,7 +105,7 @@
                   readonly
                   color="yellow-darken-2"
                   size="x-small"
-                  density="cobact"
+                  density="compact"
                 >
                 </v-rating>
                 <v-card-text class="pl-0 pt-0">
@@ -125,7 +145,7 @@
                 </v-btn-toggle>
                 <div class="mt-5">
                   <v-btn
-                    density="combact"
+                    density="compact"
                     class="py-2 px-8"
                     style="text-transform: none; border-radius: 30px"
                     @click="
@@ -164,6 +184,12 @@ import { Pagination } from 'swiper';
 import { VSkeletonLoader } from 'vuetify/lib/components/index.mjs';
 
 export default {
+  inject: ['Emitter'],
+  methods: {
+    openQuickView(product) {
+      this.Emitter.emit('openQuickView', product);
+    },
+  },
   props: {
     products: {
       type: Array,
@@ -185,4 +211,12 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.new-products {
+  .img-parent:hover {
+    .quick-view-btn {
+      opacity: 1 !important;
+    }
+  }
+}
+</style>

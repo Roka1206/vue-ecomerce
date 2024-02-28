@@ -13,7 +13,7 @@ const routes = [
     component: () => import('@/views/ProductsCategoryView'),
   },
   {
-    path: '/products/product-details/:productId',
+    path: '/products/product_details/:productId',
     name: 'products_details',
     component: () => import('@/views/ProductDetailsView'),
   },

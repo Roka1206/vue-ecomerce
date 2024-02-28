@@ -54,8 +54,10 @@
             >
               <v-badge
                 location="right top"
-                content="2"
+                :content="cartItems.length"
                 color="#ffb547"
+                offset-x="-14"
+                v-if="cartItems.length"
               >
                 <v-icon>mdi-cart-outline</v-icon>
               </v-badge>
@@ -71,6 +73,7 @@
 <script>
 import { productsModule } from '@/stores/products';
 import { mapState } from 'pinia';
+import { cartStore } from '@/stores/cart';
 export default {
   inject: ['Emitter'],
   methods: {
@@ -80,6 +83,7 @@ export default {
   },
   computed: {
     ...mapState(productsModule, ['categories']),
+    ...mapState(cartStore, ['cartItems']),
   },
 };
 </script>

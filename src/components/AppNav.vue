@@ -74,8 +74,10 @@
               >
                 <v-badge
                   location="right top"
-                  content="2"
+                  :content="cartItems.length"
                   color="#ffb547"
+                  offset-x="-14"
+                  v-if="cartItems.length"
                 >
                   <v-icon>mdi-cart-outline</v-icon>
                 </v-badge>
@@ -158,6 +160,8 @@
 <script>
 import { mapState } from 'pinia';
 import { productsModule } from '@/stores/products';
+import { cartStore } from '@/stores/cart';
+
 export default {
   inject: ['Emitter'],
   methods: {
@@ -167,11 +171,11 @@ export default {
   },
   computed: {
     ...mapState(productsModule, ['categories']),
+    ...mapState(cartStore, ['cartItems']),
   },
   data: () => ({
     selectedLang: [
       {
-        // icon: `<img src="../assets/SVGS/en-lang.svg" alt="" style="width: 20px"/>`,
         icon: ` <svg
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"
@@ -250,7 +254,6 @@ export default {
         currency: 'USD',
       },
       {
-        // icon: `<img src="../assets/SVGS/de-lang.svg" alt="" style="width: 20px"/>`,
         icon: `<svg
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"
@@ -279,7 +282,6 @@ export default {
     ],
     langs: [
       {
-        //  icon: `<img src="../assets/SVGS/en-lang.svg" alt="" style="width: 20px"/>`,
         icon: ` <svg
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"
@@ -358,7 +360,6 @@ export default {
         currency: 'USD',
       },
       {
-        //  icon: `<img src="../assets/SVGS/de-lang.svg" alt="" style="width: 20px"/>`,
         icon: `<svg
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"

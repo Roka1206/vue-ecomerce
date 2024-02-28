@@ -9,7 +9,12 @@
             alt=""
             class="w-100"
             height="500"
+            v-if="!loading"
           />
+          <VSkeletonLoader
+            v-if="loading"
+            type="image"
+          ></VSkeletonLoader>
           <v-tabs
             center-active
             height="220"
@@ -33,8 +38,14 @@
         <v-col
           cols="5"
           class="pt-0 pl-6"
-        >
-          <v-card elevation="0">
+          ><VSkeletonLoader
+            v-if="loading"
+            type="article, article, article"
+          ></VSkeletonLoader>
+          <v-card
+            elevation="0"
+            v-if="!loading"
+          >
             <v-card-title
               class="px-8"
               style="font-size: 18px; font-weight: bold"
@@ -51,7 +62,7 @@
                 readonly
                 color="yellow-darken-2"
                 size="x-small"
-                density="cobact"
+                density="compact"
               >
               </v-rating>
               <span
@@ -121,6 +132,15 @@
                 >mdi-plus</v-icon
               >
             </div>
+            <v-card-text class="pl-0">
+              Subtotal: ${{
+                Math.ceil(
+                  singleProduct.price -
+                    singleProduct.price *
+                      (singleProduct.discountPercentage / 100),
+                ) * quantity
+              }}
+            </v-card-text>
             <v-card-actions class="mt-7 w-100 px-0">
               <v-btn
                 variant="outlined"
@@ -132,6 +152,8 @@
                 class="w-75 text-white"
                 density="compact"
                 height="50"
+                @click="addToCart(singleProduct)"
+                :loading="btnloading"
                 >Add to Cart</v-btn
               >
             </v-card-actions>
@@ -145,38 +167,42 @@
 <script>
 import { productsModule } from '@/stores/products';
 import { mapActions, mapState } from 'pinia';
+import { VSkeletonLoader } from 'vuetify/lib/components/index.mjs';
+import { cartStore } from '@/stores/cart';
+
 export default {
+  inject: ['Emitter'],
+  components: {
+    VSkeletonLoader,
+  },
   computed: {
     ...mapState(productsModule, ['singleProduct']),
   },
   methods: {
     ...mapActions(productsModule, ['getSingleProduct']),
+    ...mapActions(cartStore, ['addItem']),
+    addToCart(item) {
+      item.quantity = this.quantity;
+      this.btnloading = true;
+      setTimeout(() => {
+        this.btnloading = true;
+        this.addItem(item);
+        this.Emitter.emit('openCart');
+        this.Emitter.emit('showMsg', item.title);
+        this.dialog = false;
+      }, 1000);
+    },
   },
-  /*  data: () => ({
+  data: () => ({
+    loading: false,
     tab: '',
     quantity: 1,
-    product: {
-      id: 2,
-      title: 'iPhone X',
-      description:
-        'SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...',
-      price: 899,
-      discountPercentage: 17.94,
-      rating: 4.44,
-      stock: 34,
-      brand: 'Apple',
-      category: 'smartphones',
-      thumbnail: 'https://cdn.dummyjson.com/product-images/2/thumbnail.jpg',
-      images: [
-        'https://cdn.dummyjson.com/product-images/2/1.jpg',
-        'https://cdn.dummyjson.com/product-images/2/2.jpg',
-        'https://cdn.dummyjson.com/product-images/2/3.jpg',
-        'https://cdn.dummyjson.com/product-images/2/thumbnail.jpg',
-      ],
-    },
-  }), */
-  async mounted() {
-    await this.getSingleProduct(tjis.$route.params.productId);
+    btnloading: false,
+  }),
+  async beforeMount() {
+    this.loading = true;
+    await this.getSingleProduct(this.$route.params.productId);
+    this.loading = false;
   },
 };
 </script>
